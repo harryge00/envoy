@@ -78,9 +78,18 @@ void EdsClusterImpl::onConfigUpdate(const ResourceVector& resources, const std::
     priority_state_manager.initializePriorityFor(locality_lb_endpoint);
 
     for (const auto& lb_endpoint : locality_lb_endpoint.lb_endpoints()) {
+      if(lb_endpoint.endpoint().address().has_socket_address() && local_info_.address() && local_info_.address()->ip()) {
+        if(!lb_endpoint.endpoint().address().socket_address().address().compare(local_info_.address()->ip()->addressAsString())) {
+          ENVOY_LOG(info, "Found matched ep address: {}", lb_endpoint.endpoint().DebugString());
+          continue;
+        }
+
+      }
       priority_state_manager.registerHostForPriority(
           "", resolveProtoAddress(lb_endpoint.endpoint().address()), locality_lb_endpoint,
           lb_endpoint, Host::HealthFlag::FAILED_EDS_HEALTH);
+
+
     }
   }
 
