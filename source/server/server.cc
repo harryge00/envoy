@@ -205,7 +205,7 @@ void InstanceImpl::initialize(Options& options,
   ENVOY_LOG(info, "initializing epoch {} (hot restart version={})", options.restartEpoch(),
             restarter_.version());
 
-  ENVOY_LOG(info, "statically linked extensions:");
+  ENVOY_LOG(info, "new version: statically linked extensions:");
   ENVOY_LOG(info, "  access_loggers: {}",
             Registry::FactoryRegistry<Configuration::AccessLogInstanceFactory>::allFactoryNames());
   ENVOY_LOG(
